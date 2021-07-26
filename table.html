@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LOG BOOK</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- bootstrap files -->
+        <link rel="stylesheet" href="lib/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="lib/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="css/general.css">
+
+        <!-- knockout and jquery -->
+        <script src="lib/js/knockout-3.5.0.js" defer></script>
+        <script src="lib/js/jquery-3.4.1.min.js" defer></script>
+
+        <script src="js/table.js" defer></script>
+    </head>
+    <body>
+        <nav>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h1 class="left-arrow-icon" onclick="window.location.href='index.html'">&#8592;</h1>
+                </div>
+                <div>
+                    <h1>Log book Table</h1>
+                </div>
+                <div class="right-btns">
+                    <span data-bind="text: loggedInUsername" class="user-name" onclick="window.location.href='user_profile.html'"></span>
+                    <button class="btn btn-light" style="display: none;" data-bind="click: logout, visible: true">Logout</button>
+                </div>
+            </div>
+        </nav>
+        <div class="title-bar">
+            <div class="form-group row">
+                <div class="form-group col-sm-3">
+                    <select class="form-control" data-bind="options: month_filter_arr,optionsText: $data, value: monthFilterValue, event: {change: onChangeOptions}"></select>
+                </div>
+                <div class="form-group col-sm-3">
+                    <select class="form-control" data-bind="options: year_filter_arr,optionsText: $data, value: yearFilterValue, event: {change: onChangeOptions}"></select>
+                </div>
+                <div class="form-group col-sm-3"></div>
+               
+                <div class="form-group col-sm-3">
+                    <button class="btn btn-primary" data-bind="click: editData, enable: typeof(selectedRowID()) == 'number'">Edit</button>
+                    <button class="btn btn-primary" data-bind="click: deleteData, enable: typeof(selectedRowID()) == 'number'">Delete</button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="general-container">
+          <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th rowspan="3" class="text-center align-middle">DATE(dd-mm-yyyy)</th>
+                            <th rowspan="1" colspan="3" class="text-center align-middle">AIRCRAFT</th>
+                            <th rowspan="3" class="text-center align-middle">HOLDER'S OPERATING CAPACITY</th>
+                            <th rowspan="1" colspan="2" class="text-center align-middle">JOURNEY OF NATURE OF FLIGHT</th>
+                            <th rowspan="1" colspan="6" class="text-center align-middle">FLYING TIMES</th>
+                            <th rowspan="3" class="text-center align-middle">REMARKS</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="text-center align-middle">TYPE</th>
+                            <th rowspan="2" class="text-center align-middle">MARKINGS</th>
+                            <th rowspan="2" class="text-center align-middle">CAPTAIN</th>
+        
+                            <th rowspan="2" class="text-center align-middle">FROM</th>
+                            <th rowspan="2" class="text-center align-middle">TO</th>
+        
+                            <th rowspan="2" class="text-center align-middle">DEPARTURE</th>
+                            <th rowspan="2" class="text-center align-middle">ARRIVAL</th>
+                            <th colspan="2" class="text-center align-middle">DAY</th>
+                            <th colspan="2" class="text-center align-middle">NIGHT</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center align-middle">IN CHARGE</th>
+                            <th class="text-center align-middle">SECOND</th>
+                            <th class="text-center align-middle">IN CHARGE</th>
+                            <th class="text-center align-middle">SECOND</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- ko foreach: flights_arr -->
+                        <!-- ko foreach: journey-->
+                        <tr data-bind="click: ()=>{$root.selectedRow($parent.id)}, style: { background: $root.selectedRowID() === $parent.id ? 'lightblue' : 'white' }" style="cursor: pointer">
+                            
+                            <!-- ko if: ($index() == 0)-->
+                            <td class="text-center align-middle" data-bind="text: $parent.date"></td>
+                            <td class="text-center align-middle" data-bind="text: $parent.aircraftType"></td>
+                            <td class="text-center align-middle" data-bind="text: $parent.aircraftMarkings"></td>
+                            <td class="text-center align-middle" data-bind="text: $parent.captain"></td>
+                            <td class="text-center align-middle" data-bind="text: $parent.holdersOperatingCapacity"></td>
+                            <!-- /ko -->
+
+                            <!-- ko if: ($index() != 0)-->
+                            <td class="text-center align-middle"></td>
+                            <td class="text-center align-middle"></td>
+                            <td class="text-center align-middle"></td>
+                            <td class="text-center align-middle"></td>
+                            <td class="text-center align-middle"></td>
+                            <!-- /ko -->
+
+                            
+                            
+                            
+                            <td class="text-center align-middle" data-bind="text: journeyFrom"></td>
+                            <td class="text-center align-middle" data-bind="text: journeyTo"></td>
+                            <td class="text-center align-middle" data-bind="text: departure"></td>
+                            <td class="text-center align-middle" data-bind="text: arrival"></td>
+                            <td class="text-center align-middle" data-bind="text: dayInCharge"></td>
+                            <td class="text-center align-middle" data-bind="text: daySecond"></td>
+                            <td class="text-center align-middle" data-bind="text: nightInCharge"></td>
+                            <td class="text-center align-middle" data-bind="text: nightSecond"></td>
+                            <td class="text-center align-middle" data-bind="text: remarks"></td>
+                        </tr>
+                        <!-- /ko -->
+                        <tr>
+                            <td colspan="14"></td>
+                        </tr>
+                        <!-- /ko -->
+                       
+
+                        
+                        <tr>
+                            <td colspan="9"></td>
+                            <td class="text-center align-middle">Day InCharge Total</td>
+                            <td class="text-center align-middle">Day Second Total</td>
+                            <td class="text-center align-middle">Night InCharge Total </td>
+                            <td class="text-center align-middle">Night Second Total</td>
+                            <td class="text-center align-middle">Grand total</td>
+                        </tr>
+                        <tr>
+                            <td colspan="9"></td>
+                            <td class="text-center align-middle" data-bind="text: dayInChargeTotal"></td>
+                            <td class="text-center align-middle" data-bind="text: daySecondTotal"></td>
+                            <td class="text-center align-middle" data-bind="text: nightInChargeTotal"></td>
+                            <td class="text-center align-middle" data-bind="text: nightSecondTotal"></td>
+                            <td class="text-center align-middle" data-bind="text: grandTotal"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

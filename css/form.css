@@ -1,0 +1,21 @@
+form {
+    width: 30%;
+    margin-top: 4%;
+    border: 1px solid black;
+    padding: 30px;
+}
+
+form label{
+	display: inline-block;
+	width: 60%;
+	font-size: 1rem;
+}
+
+.input-group{
+	width: 100%;
+	position: relative;
+	font-size: 0;
+	overflow: hidden;
+	margin-bottom: 3%;
+}
+

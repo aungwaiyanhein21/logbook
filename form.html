@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LOG BOOK</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- bootstrap files -->
+        <link rel="stylesheet" href="lib/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="lib/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="css/general.css">
+
+        <!-- knockout and jquery -->
+        <script src="lib/js/knockout-3.5.0.js" defer></script>
+        <script src="lib/js/jquery-3.4.1.min.js" defer></script>
+
+        <script src="js/form.js" defer></script>
+    </head>
+    <body>
+        <nav>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h1 class="left-arrow-icon" onclick="window.location.href='index.html'">&#8592;</h1>
+                </div>
+                <div>
+                    <h1>Log book Form</h1>
+                </div>
+                <div class="right-btns">
+                    <span data-bind="text: loggedInUsername" class="user-name" onclick="window.location.href='user_profile.html'"></span>
+                    <button class="btn btn-light" style="display: none;" data-bind="click: logout, visible: true">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="general-container">
+            <form>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"><span style="color: red;">*</span>DATE:</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" data-bind="textInput: flight.date">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold">AIRCRAFT<hr></label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">TYPE:</label>
+                    <div class="form-group col-sm-10">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="to add new aircraft type" data-bind="textInput: newAircraftTypeText,event:{keypress: checkEnter}">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" data-bind="click: addAircraftType">+</button>
+                            </div>
+                        </div>
+                        
+                        <!-- ko if: aircraftTypeErrorMessage-->
+                        <div class="alert alert-danger alert-dismissible fade show col-sm-12 col-form-label" role="alert" style="display: none;" data-bind="visible: true">
+                                Aircraft Type already exists!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" data-bind="click: ()=>{aircraftTypeErrorMessage(false)}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- /ko -->
+
+                        <select class="form-control" data-bind="options: flight.aircraftTypeOptions, optionsText: 'title', value: flight.aircraftTypeID, optionsValue: 'id'"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">MARKINGS:</label>
+                    <div class="col-sm-10">
+                        <input type="text" placeholder="markings" class="form-control" data-bind="textInput: flight.aircraftMarkings">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">CAPTAIN:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" data-bind="value: flight.captainRank">
+                            <option>F/O</option>
+                            <option>CAPTAIN</option>
+                        </select> <br>
+                        <input type="text" placeholder="name" class="form-control" data-bind="textInput: flight.captainName">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">HOLDER'S OPERATING CAPACITY:</label>
+                    <div class="col-sm-10">
+                        <input type="text" placeholder="holder's operating capacity" class="form-control" data-bind="textInput: flight.holdersOperatingCapacity">
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label text-center font-weight-bold">JOURNEY OF NATURE OF FLIGHT</label>
+                    <label class="col-sm-6 col-form-label text-center font-weight-bold">FLYING TIMES</label>
+                    <label class="col-sm-1 col-form-label text-center font-weight-bold">REMARKS</label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label text-center"><hr></label>
+                    <label class="col-sm-6 col-form-label text-center"><hr></label>
+                    <label class="col-sm-1 col-form-label text-center"><hr></label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="to add new IATA code" data-bind="textInput: newIATACodeText, event:{keypress: checkEnter}" maxlength="3">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" data-bind="click: addIATACode">+</button>
+                            </div>
+
+                        </div>
+                        <!-- ko if: IATACodeErrorMessage-->
+                        <div class="alert alert-danger alert-dismissible fade show col-sm-12 col-form-label" role="alert" style="display: none;" data-bind="visible: true">
+                                IATA Code already exists!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" data-bind="click: ()=>{IATACodeErrorMessage(false)}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <label class="col-sm-2 col-form-label"></label>
+                    <label class="col-sm-2 col-form-label text-center">DAY<hr></label>
+                    <label class="col-sm-2 col-form-label text-center">NIGHT<hr></label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">FROM:</label>
+                    <label class="col-sm-2 col-form-label">TO:</label>
+                    <label class="col-sm-1 col-form-label" title="DEPARTURE">DEPART:</label> 
+                    <label class="col-sm-1 col-form-label" title="ARRIVAL">ARR:</label>
+                    <label class="col-sm-1 col-form-label">IN CHARGE:</label>
+                    <label class="col-sm-1 col-form-label">SECOND:</label>
+                    <label class="col-sm-1 col-form-label">IN CHARGE:</label>
+                    <label class="col-sm-1 col-form-label">SECOND:</label>
+                    <label class="col-sm-2 col-form-label">REMARKS:</label>
+                </div>
+
+                <!-- ko foreach: flight.inputRowsArray-->
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <select class="form-control" data-bind="options: $parent.flight.IATAOptions,optionsText: 'title', value: selectedIATAValueFromID, optionsValue: 'id'"></select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control" data-bind="options: $parent.flight.IATAOptions,optionsText: 'title', value: selectedIATAValueToID, optionsValue: 'id'"></select>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: departure" maxlength="4">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: arrival" maxlength="4">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: dayInCharge" maxlength="4" placeholder="0:00">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: daySecond" maxlength="4" placeholder="0:00">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: nightInCharge" maxlength="4" placeholder="0:00">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: nightSecond" maxlength="4" placeholder="0:00">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" class="form-control" data-bind="textInput: remarks">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary" data-bind="click: ()=>{$root.removeRows($index)}">x</button>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-primary" data-bind="click: addRows">+</button>
+                        <label>ADD MORE ROWS</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                     <!-- ko if: successMessage-->
+                    <div class="alert alert-success alert-dismissible fade show col-sm-12 col-form-label" role="alert" style="display: none;" data-bind="visible: true">
+                        You have successfully submitted the form!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" data-bind="click: ()=>{successMessage(false)}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- /ko -->
+    
+                    <!-- ko if: errorMessage-->
+                    <div class="alert alert-danger alert-dismissible fade show col-sm-12 col-form-label" role="alert" style="display: none;" data-bind="visible: true">
+                        One of the required fields is missing!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" data-bind="click: ()=>{errorMessage(false)}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- /ko -->
+                </div>
+               
+                <div class="form-group row">
+                    <label class="col-md-8 col-lg-9  col-form-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <button type="button" class="btn btn-danger" onclick="window.location.href='index.html'">CANCEL</button>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <button type="button" class="btn btn-primary" data-bind="click: submitData">SUBMIT</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
